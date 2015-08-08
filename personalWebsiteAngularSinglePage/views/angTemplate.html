@@ -1,0 +1,15 @@
+ <md-content class="md-padding" ng-controller="onUrl">
+    <md-tabs  md-dynamic-height  md-border-bottom >
+        <!--<md-tab ng-repeat="link in subLinks.subPages" ui-sref='{{link.id}}' label="{{link.Title}}">-->
+        <md-tab ng-repeat="link in links" label="{{link.Title}}">
+            <md-content class="md-padding">
+                <h1 class="md-display-2">{{link.Title}}</h1>
+                <!--<div ui-view='{{link.id}}'></div>-->
+                <div ui-view></div>
+                Wassup
+                
+            </md-content>
+        </md-tab>
+    </md-tabs>
+    
+</md-content>

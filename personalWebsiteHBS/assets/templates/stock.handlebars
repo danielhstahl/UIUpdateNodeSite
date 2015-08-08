@@ -1,0 +1,7 @@
+<span class="stockSymbol">{{symbol}}</span>
+<span class='stockPrice'>{{price}}</span>
+{{#if up}}
+  <span class='stockChange stockUp'> {{change}}</span>
+{{else}}
+  <span class='stockChange stockDown'> {{change}}</span>
+{{/if}}

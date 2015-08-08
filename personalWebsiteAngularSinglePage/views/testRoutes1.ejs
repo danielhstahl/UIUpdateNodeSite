@@ -1,0 +1,101 @@
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="http://cdn.rawgit.com/angular/bower-material/v0.10.0/angular-material.css">
+    <meta name="viewport" content="initial-scale=1" />
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-messages.min.js"></script>
+    <script src="http://cdn.rawgit.com/angular/bower-material/v0.10.0/angular-material.js"></script>
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+<div ng-app="app">
+    
+    <div ui-view></div>
+    
+    <!-- Below are the templates that get cached since we can't have external templates with JSFiddle -->
+
+    <!-- CACHE FILE: list.html -->
+    <script type="text/ng-template" id="content.html">
+        <div class="row">
+             <h3>This is the header</h3>
+        </div>
+        <div class="row">
+            <div class="small-4 columns" ng-controller="SidebarCtrl">
+                <ul>
+                    <li ng-repeat="page in content"> <a ng-click="setPage(page)">goto {{page}}</a></li>
+                </ul>
+            </div>
+            <div class="small-8 columns content">
+                <div ui-view></div>
+            </div>
+        </div>
+    </script>
+    <!-- CACHE FILE: list.html -->
+    <script type="text/ng-template" id="content.red.html">
+        <div class="row red">
+             red
+        </div>
+    </script>
+    <!-- CACHE FILE: list.html -->
+    <script type="text/ng-template" id="content.blue.html">
+        <div class="row blue">
+             blue
+        </div>
+    </script>
+    <!-- CACHE FILE: list.html -->
+    <script type="text/ng-template" id="content.green.html">
+        <div class="row green">
+             green
+        </div>
+    </script>
+    <script>
+    angular.module('app', ['ui.router'])
+    .config(['$stateProvider', function ($stateProvider) {
+        var home = {
+                name: 'home',
+                url: '/',
+                templateUrl: 'angTemplate.html'
+            },
+            red = {
+                name: 'red',
+                url: 'red',
+                parent: home,
+                templateUrl: 'content.red.html'
+            },
+            blue = {
+                name: 'blue',
+                url: 'blue',
+                parent: home,
+                templateUrl: 'content.blue.html'
+            },
+            green = {
+                name: 'green',
+                url: 'green',
+                parent: home,
+                templateUrl: 'content.green.html'
+            };
+    
+        $stateProvider.state(home);
+        $stateProvider.state(red);
+        $stateProvider.state(green);
+        $stateProvider.state(blue);
+    }])
+    .run(['$state', function ($state) {
+       $state.transitionTo('home'); 
+    }])
+    
+    .controller('onUrl', function ($scope, $state) {
+        //$scope.subLinks={};
+        $scope.links=[{"Title":"Productivity", "templateUrl":"Productivity.html", "id":"Productivity"}, {"Title":"Data Management", "templateUrl":"DataManagement.html", "id":"DataManagement"}, {"Title":"Mathematical Modeling", "templateUrl":"Modeling.html", "id":"Modeling"}];
+
+    $scope.content = ['red', 'green', 'blue'];
+
+    $scope.setPage = function (page) {
+        $state.transitionTo(page);
+    };
+});
+    </script>
+    
+</div>

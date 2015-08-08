@@ -1,0 +1,44 @@
+<div ng-controller="TabsCtrl" class="content" ng-show="$root.loadingComplete">
+    <md-tabs md-selected="$root.selectedIndex" md-border-bottom class="md-primary">
+        <md-tab id="tab1" md-on-select="goTo('start')">
+            <md-tab-label>Welcome</md-tab-label>
+            <md-tab-template>
+                <md-content>
+                    <div ui-view="vStart"></div>
+                </md-content>
+            </md-tab-template>
+        </md-tab>
+        <md-tab id="tab2" md-on-select="goTo('personal')">
+            <md-tab-label>Personal</md-tab-label>
+            <md-tab-template>
+                <md-content>
+                    <div ui-view="vPersonal"></div>
+                </md-content>
+            </md-tab-template>
+        </md-tab>
+    </md-tabs>
+</div>
+<script>
+angular.module('onboarding').config(['$stateProvider', '$urlRouterProvider',
+    function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state('start', {
+                url: '/:memberId',
+                views: {
+                    vStart: {
+                        templateUrl: 'views/start.html',
+                        controller: 'StartCtrl'
+                    }
+                }
+            })
+            .state('personal', {
+                url: '/:memberId/personal',
+                views: {
+                    vPersonal: {
+                        templateUrl: 'views/personal.html',
+                        controller: 'PersonalCtrl'
+                    }
+                }
+            })
+    }]);
+</script>

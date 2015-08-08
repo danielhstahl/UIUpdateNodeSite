@@ -1,0 +1,370 @@
+<html lang="en" ng-app="StarterApp">
+  <head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="http://cdn.rawgit.com/angular/bower-material/v0.10.0/angular-material.css">
+    <meta name="viewport" content="initial-scale=1" />
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-messages.min.js"></script>
+    <script src="http://cdn.rawgit.com/angular/bower-material/v0.10.0/angular-material.js"></script>
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-resource.min.js"></script>-->
+    
+        <style>
+            .fabSpeedDialdemoBasicUsage .text-capitalize {
+                text-transform: capitalize; 
+            }
+            .fabSpeedDialdemoBasicUsage .md-fab:hover, .fabSpeedDialdemoBasicUsage .md-fab.md-focused {
+                background-color: #000 !important; 
+            }
+            .fabSpeedDialdemoBasicUsage p.note {
+                font-size: 1.2rem; 
+            }
+            .fabSpeedDialdemoBasicUsage .lock-size {
+                min-width: 300px;
+                min-height: 300px;
+                width: 300px;
+                height: 300px;
+                margin-left: auto;
+                margin-right: auto; 
+            }
+            .keepFixed{
+                position:fixed;
+               /* top:15px;*/
+                right:15px;
+                height:auto;
+                z-index:900;
+                font:RobotoDraft;
+            }
+            .hidden{
+                display:none;
+            }
+            .md-icon-button{
+                margin: 6px !important;
+            }
+        </style>
+    
+  </head>
+  <body ng-controller="AppCtrl" layout="column">
+  
+  
+  
+    <!--fixed "daniel" links -->
+    <div class='keepFixed' layout="row">
+        <span flex></span>
+        <div layout-align="center center">
+            <h2>Daniel Stahl</h3>
+        </div>
+        <div class="lock-size fabSpeedDialdemoBasicUsage" layout="row" layout-align="center center">
+            <md-fab-speed-dial md-open="dropdown.isOpen" md-direction="{{dropdown.selectedDirection}}" ng-class="dropdown.selectedMode">
+                <md-fab-trigger>
+                    <md-button aria-label="menu" class="md-fab md-primary">
+                        <md-icon md-svg-src="assets/icons/menu.svg"></md-icon>
+                    </md-button>
+                </md-fab-trigger>
+                <md-fab-actions ng-repeat="svg in svgStyles">
+                    <md-button aria-label="{{svg.label}}" class="md-fab md-raised md-mini" ng-click="goToUrl(svg.url)">
+                        <md-icon ng-style="{color: svg.color}" md-svg-src="{{svg.src}}"></md-icon>
+                    </md-button>
+                    
+                </md-fab-actions>
+            </md-fab-speed-dial>
+        </div>
+    </div>
+    <!--side menu -->
+    <section layout="row" flex>
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+            <md-toolbar class="md-primary">
+                <md-button aria-label="menu" class="md-icon-button md-primary" ng-click="close()" hide-gt-md>
+                    <md-icon md-svg-src="assets/icons/close.svg"></md-icon>
+                </md-button>
+            
+                 <!--<md-button ng-click="close()" class="md-primary" hide-gt-md>
+                    Close Sidenav Left
+                </md-button>-->
+            </md-toolbar>
+            <md-content layout-padding>
+                <ul ng-repeat="link in links">
+                    <li><a ui-sref="{{link.label}}">{{link.label}}</a></li> <!--note the "ui-sref" isntead of "href"-->
+                </ul>
+               
+                <!--<p hide-md show-gt-md>
+                    This sidenav is locked open on your device. To go back to the default behavior, narrow your display.
+                </p> -->
+            </md-content>
+        </md-sidenav>
+        <!--<md-content flex layout-padding>
+            <div layout="column" layout-fill layout-align="top center">
+                <p>
+                    The left sidenav will 'lock open' on a medium (>=960px wide) device.
+                </p>
+                <p>
+                    The right sidenav will focus on a specific child element.
+                </p>
+                <div>
+                    <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md>
+                        Toggle left
+                    </md-button>
+                </div>
+            </div>
+            <div flex></div>
+        </md-content>-->
+        <div layout="column" ng-controller="tabCtrl">
+            <md-toolbar class="md-accent"  hide-gt-md > <!--adds a bar to the top of the page...but only show  when page is smaller than md -->
+                 <md-button aria-label="menu" class="md-icon-button md-accent" ng-click="toggleLeft()">
+                    <md-icon md-svg-src="assets/icons/menu.svg" ng-style={"color":"#777"} ></md-icon>
+                </md-button>
+            </md-toolbar>
+             
+            <md-tabs md-dynamic-height  md-border-bottom  md-stretch-tabs  md-selected="selectedIndex">
+                <!--<md-tab ng-repeat="link in subLinks.subPages" ui-sref='{{link.id}}' label="{{link.Title}}">-->
+                <md-tab ng-repeat="link in links"  label="{{link.Title}}">
+                    <md-content class="md-padding">
+                                           
+                        <div ui-view flex></div>
+                        
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+            
+           
+            <!--
+            <md-content class="md-padding" ng-controller="onUrl">
+                <md-tabs  md-dynamic-height  md-border-bottom >
+                    
+                    <md-tab ng-repeat="link in subLinks.subPages" label="{{link.Title}}">
+                        <md-content class="md-padding">
+                            <h1 class="md-display-2">{{link.Title}}</h1>
+                            <div ui-view='{{link.id}}'></div>
+                            
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+                
+            </md-content>
+            -->
+         
+           
+        </div>
+    </section>
+    <!--content-->
+    
+    
+    
+    
+    
+    
+  </body>
+    <script>
+        var links=<%- JSON.stringify(pagelinks) %>;
+        var n=links.length;
+    
+        var app = angular.module('StarterApp', ['ngMaterial', 'ui.router']);
+        app.run(['$rootScope', function ($rootScope) {
+
+            $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+
+                console.log(error);
+
+            });
+
+        }]);
+        app.config(
+            function($mdThemingProvider) {
+                $mdThemingProvider.theme('default')
+                .primaryPalette('blue-grey')
+                .accentPalette('grey');
+            },
+            /*['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+                    $urlRouterProvider.otherwise('/home');
+                    console.log("got here");
+                    for(var i=0; i<n; i++){
+                   // angular.forEach(links, function(r) {
+                        $stateProvider.state(links[i].label, {
+                            abstract: true,
+                            templateUrl:'angTemplate.html',
+                            controller: function($scope) {
+                              $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                                $scope.currentTab = toState.data.selectedTab;
+                              });
+                            },
+                            url:links[i].url.replace("#", ""), 
+                            //views: getViews(links[i].subPages)
+                            
+                            
+                            //templateUrl:'', //can I get away with none?
+                            //controller: 'onUrl'
+                        });
+                        var subs=links[i].subPages;
+                        var m=subs.length;
+                        for(var j=0; j<m; j++){
+                            var viewsObj={};
+                            viewsObj[subs[j].label]={controller:'onUrl'};
+                            $stateProvider.state(links[i].label+'.'+subs[j].label, {
+                                url: "/"+subs[j].label,
+                                data: {
+                                    'selectedTabl':j
+                                },
+                                views: viewsObj
+                            });   
+                        }
+                    }
+                                             
+                }
+            ] */
+            /*['$stateProvider', function ($stateProvider) {
+                var home = {
+                        name: 'home',
+                        url: '/',
+                        templateUrl: 'angTemplate.html'
+                    },
+                    red = {
+                        name: 'red',
+                        url: 'red',
+                        parent: home,
+                        templateUrl: 'content.red.html'
+                    },
+                    blue = {
+                        name: 'blue',
+                        url: 'blue',
+                        parent: home,
+                        templateUrl: 'content.blue.html'
+                    },
+                    green = {
+                        name: 'green',
+                        url: 'green',
+                        parent: home,
+                        templateUrl: 'content.green.html'
+                    };
+            
+                $stateProvider.state(home);
+                $stateProvider.state(red);
+                $stateProvider.state(green);
+                $stateProvider.state(blue);
+            }]*/
+            function($stateProvider, $urlRouterProvider) {
+
+                $urlRouterProvider.otherwise('/tab/dash');
+                $stateProvider
+                .state('view1', {
+                    url: "/view1",
+                    //templateUrl: "partials/view1.html"
+                    templateUrl: "Productivity.html"
+                })
+                .state('view2', {
+                    url: "/view2",
+                    templateUrl: "DataManagement.html"
+                })
+                .state('view3', {
+                    url: "/view3",
+                    templateUrl: "Modeling.html"
+                })
+                ;
+            }
+    
+            
+        );
+        //app.run(['$state', function ($state) {
+        //   $state.transitionTo('home'); 
+        //}]);
+        function getViews(data){
+            var obj={};
+            var m=data.length;
+            for(var i=0; i<m; i++){
+                obj[data[i].id]={templateUrl:data[i].templateUrl, controller:'onUrl'};
+            }
+            console.log(obj);
+            return obj;
+           
+        }
+        app.controller('tabCtrl', function($scope, $location, $log) {
+            $scope.selectedIndex = 0;
+            $scope.links =[{Title:"tab1"}, {Title:"tab2"}, {Title:"tab3"}];
+            
+
+            $scope.$watch('selectedIndex', function(current, old) {
+                
+                switch (current) {
+                    case 0:
+                        $location.url("/view1");
+                        break;
+                    case 1:
+                        $location.url("/view2");
+                        break;
+                    case 2:
+                        $location.url("/view3");
+                        break;
+                }
+            });
+        });
+        /*app.controller('onUrl', function($scope, $location){
+            console.log(links);
+            console.log($location.path());
+            for(var i=0; i<n; i++){
+                if(links[i].url==='#'+$location.path()){
+                    $scope.subLinks=links[i];
+                    //console.log("did it!");
+                    break;
+                }
+            }
+            console.log($scope.subLinks);
+            $scope.onChange=function(){
+                
+            }
+        });*/
+        app.controller('AppCtrl', function($scope, $location, $timeout, $mdSidenav, $mdUtil, $log, $mdMedia) {
+            /*setup dropdown contact */
+            $scope.dropdown = {
+                topDirections: ['left', 'up'],
+                bottomDirections: ['down', 'right'],
+                isOpen: false,
+                availableModes: ['md-fling', 'md-scale'],
+                selectedMode: 'md-fling',
+                availableDirections: ['up', 'down', 'left', 'right'],
+                selectedDirection: 'down'
+            };
+            var myConnection=<%- JSON.stringify(connections) %>; //get data from server side...
+            $scope.svgStyles=myConnection;
+            $scope.goToUrl=function(url){
+               window.location=url;
+            }
+            /*end setup dropdown contact */
+           
+           /*setup links */
+            
+           
+            //var links=<%- JSON.stringify(pagelinks) %>;
+            //angular.forEach(links, function(r) { //iterate over links
+            //    $routeProvider.when(r.url, {templateUrl: r.template, controller: r.controller});
+            //});
+            $scope.links=links;
+            /*end setup links */
+            
+            
+            /*build side nav */
+            $scope.toggleLeft = buildToggler('left');
+            $scope.close = function () {
+                $mdSidenav('left').close()
+                    .then(function () {
+                        $log.debug("close LEFT is done");
+                    });
+            };
+            function buildToggler(navID) {
+                var debounceFn =  $mdUtil.debounce(function(){
+                    $mdSidenav(navID)
+                    .toggle()
+                    .then(function () {
+                        $log.debug("toggle " + navID + " is done");
+                    });
+                },300);
+                return debounceFn;
+            } 
+            /*build side nav */
+        });
+
+    </script>
+</html>

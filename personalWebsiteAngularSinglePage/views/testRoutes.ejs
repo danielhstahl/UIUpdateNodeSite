@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link rel="stylesheet" href="http://cdn.rawgit.com/angular/bower-material/v0.10.0/angular-material.css">
+    <meta name="viewport" content="initial-scale=1" />
+    <!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-messages.min.js"></script>
+    <script src="http://cdn.rawgit.com/angular/bower-material/v0.10.0/angular-material.js"></script>
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+<div class="intro">
+  This demonstration shows how Angular-Material Tabs can be used with Angular-UI-Router
+<div>
+  
+<div ng-app="dsntApp" 
+     ng-controller="tabCtrl"
+     layout="column" class="demo" >
+
+  <script type="text/ng-template" id="partials/view1.html">  Tab #1 </script>
+  <script type="text/ng-template" id="partials/view2.html">  Tab #2 </script>
+  <script type="text/ng-template" id="partials/view3.html">  Tab #3 </script>
+  <md-toolbar>
+    <h2 class="md-toolbar-tools">
+      <span>Toolbar</span>
+    </h2>
+  </md-toolbar>
+  <md-tabs md-stretch-tabs 
+           md-selected="selectedIndex">
+     <md-tab label="tab1"></md-tab> 
+     <md-tab label="tab2"></md-tab>
+     <md-tab label="tab3"></md-tab>  
+  </md-tabs>
+
+  <div id="content" ui-view flex> </div>
+
+</div>
+
+<script>
+
+"use strict";
+angular.module('dsntApp', ['ngMaterial', "ui.router"])
+    .config(function($stateProvider, $urlRouterProvider) {
+
+        $urlRouterProvider.otherwise('/tab/dash');
+        $stateProvider
+        .state('view1', {
+            url: "/view1",
+            //templateUrl: "partials/view1.html"
+            templateUrl: "Productivity.html"
+        })
+        .state('view2', {
+            url: "/view2",
+            templateUrl: "DataManagement.html"
+        })
+        .state('view3', {
+            url: "/view3",
+            templateUrl: "Modeling.html"
+        })
+        ;
+    })
+    .controller('tabCtrl', function($scope, $location, $log) {
+        $scope.selectedIndex = 0;
+
+        $scope.$watch('selectedIndex', function(current, old) {
+            switch (current) {
+                case 0:
+                    $location.url("/view1");
+                    break;
+                case 1:
+                    $location.url("/view2");
+                    break;
+                case 2:
+                    $location.url("/view3");
+                    break;
+            }
+        });
+    });
+
+
+
+
+</script>
+
